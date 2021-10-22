@@ -8,22 +8,18 @@ import {
   Route,
   Link
 } from "react-router-dom";
+// import { CountContext } from './context/currency-context';
 function App() {
-  React.useEffect(() => {
-    (async () => {
-      const data = await api.currency.getLatestCurrencyData()
-      console.log(data)
-    })()
-  }, [])
+  
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/">
-            {/* <About /> */}
-          </Route>
-        </Switch>
-      </Router>
+        <Router>
+          <Switch>
+            <Route path="/">
+              {/* <About /> */}
+            </Route>
+          </Switch>
+        </Router>
     </div>
   );
 }
