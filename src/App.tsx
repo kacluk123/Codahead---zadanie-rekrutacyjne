@@ -1,27 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { api } from './Api';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-// import { CountContext } from './context/currency-context';
-function App() {
-  
-  return (
-    <div className="App">
-        <Router>
-          <Switch>
-            <Route path="/">
-              {/* <About /> */}
-            </Route>
-          </Switch>
-        </Router>
-    </div>
-  );
-}
+import * as React from 'react'
 
-export default App;
+import { Navigation } from './components/Navigation'
+import { useCurrency } from './context/currencyContext'
+import { MainPagesRouting } from './routing/mainPagesRouting'
+
+export const App = () => {
+  const { fetchCurrencyData } = useCurrency()
+
+  React.useEffect(() => {
+    fetchCurrencyData()
+  }, [])
+
+  return (
+    <div>
+      <Navigation />
+      <MainPagesRouting />
+    </div>
+  )
+}

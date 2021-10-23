@@ -1,4 +1,4 @@
-import { ServerResponseCurrency } from "../Api/currency/currency.types";
+import { ServerResponseCurrency } from "../api/currency/currency.types";
 
 export interface CurrencyState {
   data: ServerResponseCurrency | null

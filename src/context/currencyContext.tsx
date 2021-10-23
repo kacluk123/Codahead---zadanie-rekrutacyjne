@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { api } from '../Api'
-import { ServerResponseCurrency } from '../Api/currency/currency.types'
-import { CurrencyAction, CurrencyState, CurrencyActions, CurrencyContextValue } from './currency-context.types'
+import { api } from '../api'
+import { ServerResponseCurrency } from '../api/currency/currency.types'
+import { CurrencyAction, CurrencyState, CurrencyActions, CurrencyContextValue } from './currencyContext.types'
 
 function currencyReducer(state: CurrencyState, action: CurrencyAction): CurrencyState {
   switch (action.type) {
@@ -56,6 +56,7 @@ const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
     state, 
     fetchCurrencyData
   }
+  
   return (
     <CurrencyContext.Provider value={value}>
       {children}

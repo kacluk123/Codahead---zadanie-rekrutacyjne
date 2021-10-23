@@ -1,6 +1,6 @@
 const getEnvironmentVariable = (environmentVariable: string): string => {
   const unvalidatedEnvironmentVariable = process.env[environmentVariable];
-  console.log(process.env.API_KEY)
+
   if (!unvalidatedEnvironmentVariable) {
     throw new Error(
       `Couldn't find environment variable: ${environmentVariable}`
