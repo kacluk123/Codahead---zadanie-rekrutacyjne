@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import Currencies from "../pages/Currencies";
-import Exchange from "../pages/Exchange";
+import { Exchange } from "../pages/Exchange";
 
 export const MainPagesRouting = () => {
   return (

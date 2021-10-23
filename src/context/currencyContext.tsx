@@ -89,4 +89,4 @@ function useCurrency() {
   return context
 }
 
-export {CurrencyProvider, useCurrency}
+export {CurrencyProvider, useCurrency, CurrencyContext}

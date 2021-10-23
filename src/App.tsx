@@ -13,7 +13,7 @@ export const App = () => {
     <Styled.App>
       <Navigation />
       {isPending ? (
-        <Styled.SpinnerContainer>
+        <Styled.SpinnerContainer data-testid='spinner'>
           <Spin size="large" />
         </Styled.SpinnerContainer>
       ) : <MainPagesRouting />}

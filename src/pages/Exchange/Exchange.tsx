@@ -6,11 +6,11 @@ import * as Styled from './Exchange.styles'
 
 const { Option } = Select
 
-const calculateCurrency = (from: number, to: number, amount: number) => {
+export const calculateCurrency = (from: number, to: number, amount: number) => {
   return ((1 / from) / (1 / to) * amount).toFixed(2)
 }
 
-const Exchange = () => {
+export const Exchange = () => {
   const { currenciesList, state: { currentCurrency, currencyData }} = useCurrency()
 
   const [from, setFrom] = React.useState<string>(currentCurrency)
@@ -20,12 +20,13 @@ const Exchange = () => {
   const fromAmount = currencyData?.data[from]
   const toAmount = currencyData?.data[to]
 
+  const currencyOptions = currenciesList.map(currency => <Option value={currency.currencyName}>{currency.currencyName}</Option>)
   return (
     <Styled.Exchange>
       <Card>
         <Styled.ExchangeFormContainer>
           <Form.Item label='Amount'>
-            <InputNumber value={amount} onChange={(value) => { setAmount(value) }}/>
+            <InputNumber role='currency-input' placeholder="Amount" value={amount} onChange={(value) => { setAmount(value) }}/>
           </Form.Item>
           <Form.Item label='From'>
             <Select
@@ -38,7 +39,7 @@ const Exchange = () => {
               optionFilterProp="children"
               value={from}
             >
-              {currenciesList.map(currency => <Option value={currency.currencyName}>{currency.currencyName}</Option>)}
+              {currencyOptions}
             </Select>
           </Form.Item>
           <Form.Item label='To'>
@@ -52,14 +53,14 @@ const Exchange = () => {
               optionFilterProp="children"
               value={to}
             >
-              {currenciesList.map(currency => <Option value={currency.currencyName}>{currency.currencyName}</Option>)}
+              {currencyOptions}
             </Select>
           </Form.Item>
         </Styled.ExchangeFormContainer>
         {fromAmount && toAmount && amount ? (
           <>
-            <Styled.ExchangeText>
-              {(fromAmount * amount).toFixed(2)} {from} =
+            <Styled.ExchangeText data-testid='elo'>
+              {amount} {from} =
             </Styled.ExchangeText>
             <Styled.ExchangeResult>
               {calculateCurrency(fromAmount, toAmount, amount)} {to}
@@ -70,5 +71,3 @@ const Exchange = () => {
     </Styled.Exchange>
   )
 } 
-
-export default Exchange

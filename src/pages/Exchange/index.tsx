@@ -1,3 +1,3 @@
-import Exchange from './Exchange'
+import { Exchange } from './Exchange'
 
-export default Exchange
+export { Exchange }
