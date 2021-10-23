@@ -1,20 +1,22 @@
 import * as React from 'react'
 
+import * as Styled from './App.styles'
 import { Navigation } from './components/Navigation'
 import { useCurrency } from './context/currencyContext'
 import { MainPagesRouting } from './routing/mainPagesRouting'
+import { Spin } from 'antd'
 
 export const App = () => {
-  const { fetchCurrencyData } = useCurrency()
-
-  React.useEffect(() => {
-    fetchCurrencyData()
-  }, [])
+  const { state: { isPending } } = useCurrency()
 
   return (
-    <div>
+    <Styled.App>
       <Navigation />
-      <MainPagesRouting />
-    </div>
+      {isPending ? (
+        <Styled.SpinnerContainer>
+          <Spin size="large" />
+        </Styled.SpinnerContainer>
+      ) : <MainPagesRouting />}
+    </Styled.App>
   )
 }

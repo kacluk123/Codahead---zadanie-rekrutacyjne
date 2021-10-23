@@ -8,8 +8,8 @@ function currencyReducer(state: CurrencyState, action: CurrencyAction): Currency
     case CurrencyActions.Succes: {
       return {
         ...state,
-        data: action.results,
-        isPending: true,
+        currencyData: action.results,
+        isPending: false,
       }
     }
     case CurrencyActions.Pending : {
@@ -25,6 +25,12 @@ function currencyReducer(state: CurrencyState, action: CurrencyAction): Currency
         isError: true,
       }
     }
+    case CurrencyActions.ChangeBaseCurrency : {
+      return {
+        ...state,
+        currentCurrency: action.results
+      }
+    }
     default: {
       throw new Error(`Unhandled action type`)
     }
@@ -35,26 +41,37 @@ const CurrencyContext = React.createContext<CurrencyContextValue>({} as Currency
 
 const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
   const [state, dispatch] = React.useReducer(currencyReducer, {
-    data: null,
+    currencyData: null,
     isPending: false,
     currentCurrency: 'USD',
     isError: true,
   })
   
-
   const fetchCurrencyData = async () => {
     try {
       dispatch({ type: CurrencyActions.Pending })
       const data = await api.currency.getLatestCurrencyData(state.currentCurrency)
+      data.data[state.currentCurrency] = 1
       dispatch({ type: CurrencyActions.Succes, results: data })
     } catch {
       dispatch({ type: CurrencyActions.Error })
     }
   }
+
+  React.useEffect(() => {
+    fetchCurrencyData()
+  }, [state.currentCurrency])
+
+  const currenciesList = state?.currencyData ? Object.entries(state.currencyData.data).map(([currencyName, value]) => ({
+    currencyName,
+    value
+  })) : []
   
   const value = {
     state, 
-    fetchCurrencyData
+    fetchCurrencyData,
+    currenciesList,
+    dispatch
   }
   
   return (

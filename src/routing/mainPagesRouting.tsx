@@ -6,18 +6,17 @@ import {
   Redirect
 } from "react-router-dom";
 
+import Currencies from "../pages/Currencies";
+import Exchange from "../pages/Exchange";
+
 export const MainPagesRouting = () => {
   return (
     <Switch>
       <Route path="/exchange">
-        <div>
-          dasdasdas
-        </div>
+        <Exchange />
       </Route>
       <Route path="/currencies">
-        <div>
-          bcvbcvbvbc
-        </div>
+        <Currencies />
       </Route>
       <Redirect to='/currencies' />
     </Switch>
