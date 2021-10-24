@@ -28,10 +28,6 @@ export const CurrencyContextTestComponent = () => {
     return <div>loading</div>
   } 
 
-  if (isError) {
-    return <div>Error</div>
-  }
-
   return (
     <div>
       currency - {currenciesList.length}
