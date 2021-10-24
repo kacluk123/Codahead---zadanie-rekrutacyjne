@@ -45,9 +45,12 @@ function currencyReducer(state: CurrencyState, action: CurrencyAction): Currency
   }
 }
 
+const CURRENCY_INTERVAL = 30000
+
 const CurrencyContext = React.createContext<CurrencyContextValue>({} as CurrencyContextValue)
 
 const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
+  const currencyIntervalRef = React.useRef<number | null>(null)
   const [state, dispatch] = React.useReducer(currencyReducer, {
     currencyData: null,
     isPending: false,
@@ -55,19 +58,30 @@ const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
     isError: false,
   })
   
+  const getLatestCurrencyData = async () => {
+    const data = await api.currency.getLatestCurrencyData(state.currentCurrency)
+    data.data[state.currentCurrency] = 1
+    dispatch({ type: CurrencyActions.Succes, results: data })
+  }
+
   const fetchCurrencyData = async () => {
     try {
       dispatch({ type: CurrencyActions.Pending })
-      const data = await api.currency.getLatestCurrencyData(state.currentCurrency)
-      data.data[state.currentCurrency] = 1
-      dispatch({ type: CurrencyActions.Succes, results: data })
+      await getLatestCurrencyData()
     } catch {
       dispatch({ type: CurrencyActions.Error })
     }
   }
 
   React.useEffect(() => {
+    if (currencyIntervalRef.current) {
+      clearInterval(currencyIntervalRef.current)
+    }
     fetchCurrencyData()
+    //TO KEEP FRESH CURRENCY DATA
+    currencyIntervalRef.current = window.setInterval(() => {
+      getLatestCurrencyData()
+    }, CURRENCY_INTERVAL)
   }, [state.currentCurrency])
 
   const currenciesList = state?.currencyData ? createArrayFromCurrencyObject(state?.currencyData.data) : []
