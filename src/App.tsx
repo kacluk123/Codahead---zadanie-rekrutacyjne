@@ -7,16 +7,10 @@ import { MainPagesRouting } from './routing/mainPagesRouting'
 import { Spin } from 'antd'
 
 export const App = () => {
-  const { state: { isPending } } = useCurrency()
-
   return (
     <Styled.App>
       <Navigation />
-      {isPending ? (
-        <Styled.SpinnerContainer data-testid='spinner'>
-          <Spin size="large" />
-        </Styled.SpinnerContainer>
-      ) : <MainPagesRouting />}
+      <MainPagesRouting />
     </Styled.App>
   )
 }

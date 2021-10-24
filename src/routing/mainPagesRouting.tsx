@@ -2,11 +2,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect
 } from "react-router-dom";
 
-import Currencies from "../pages/Currencies";
+import { Currencies } from "../pages/Currencies";
 import { Exchange } from "../pages/Exchange";
 
 export const MainPagesRouting = () => {

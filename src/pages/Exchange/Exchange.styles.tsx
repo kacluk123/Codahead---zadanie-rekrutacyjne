@@ -34,3 +34,9 @@ export const ExchangeResult = styled.div.attrs({
   font-weight: bold;
   font-size: 24px;
 `
+
+export const SpinnerContainer = styled.div.attrs({
+  className: 'SpinnerContainer'
+})`
+ 
+`

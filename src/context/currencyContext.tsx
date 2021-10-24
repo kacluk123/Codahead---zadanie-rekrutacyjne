@@ -1,7 +1,14 @@
 import * as React from 'react'
 import { api } from '../api'
 import { ServerResponseCurrency } from '../api/currency/currency.types'
+import { ErrorComponent } from '../components/ErrorComponent'
+import { currencyMock } from '../testUtils/currencyMock'
 import { CurrencyAction, CurrencyState, CurrencyActions, CurrencyContextValue } from './currencyContext.types'
+
+export const createArrayFromCurrencyObject = (data: {[k: string]: number}) => Object.entries(data).map(([currencyName, value]) => ({
+  currencyName,
+  value
+}))
 
 function currencyReducer(state: CurrencyState, action: CurrencyAction): CurrencyState {
   switch (action.type) {
@@ -26,6 +33,7 @@ function currencyReducer(state: CurrencyState, action: CurrencyAction): Currency
       }
     }
     case CurrencyActions.ChangeBaseCurrency : {
+      localStorage.setItem('baseCurrency', action.results);
       return {
         ...state,
         currentCurrency: action.results
@@ -43,8 +51,8 @@ const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
   const [state, dispatch] = React.useReducer(currencyReducer, {
     currencyData: null,
     isPending: false,
-    currentCurrency: 'USD',
-    isError: true,
+    currentCurrency: localStorage.getItem('baseCurrency') || 'USD',
+    isError: false,
   })
   
   const fetchCurrencyData = async () => {
@@ -62,10 +70,7 @@ const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
     fetchCurrencyData()
   }, [state.currentCurrency])
 
-  const currenciesList = state?.currencyData ? Object.entries(state.currencyData.data).map(([currencyName, value]) => ({
-    currencyName,
-    value
-  })) : []
+  const currenciesList = state?.currencyData ? createArrayFromCurrencyObject(state?.currencyData.data) : []
   
   const value = {
     state, 
@@ -73,10 +78,17 @@ const CurrencyProvider = ({ children }: { children: React.ReactNode}) => {
     currenciesList,
     dispatch
   }
+
+  const getContent = () => {
+    if (state.isError) {
+      return <ErrorComponent />
+    }
+    return children
+  }
   
   return (
     <CurrencyContext.Provider value={value}>
-      {children}
+      {getContent()}
     </CurrencyContext.Provider>
   )
 }

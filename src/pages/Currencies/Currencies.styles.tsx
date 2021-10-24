@@ -11,3 +11,7 @@ export const Currencies = styled.div.attrs({
   flex-direction: column;
   gap: 10px;
 `
+
+export const SpinnerContainer = styled.div.attrs({
+  className: 'SpinnerContainer'
+})``

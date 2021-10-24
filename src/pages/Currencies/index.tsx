@@ -1,3 +1,3 @@
-import Currencies from './Currencies'
+import { Currencies } from './Currencies'
 
-export default Currencies
+export { Currencies }
