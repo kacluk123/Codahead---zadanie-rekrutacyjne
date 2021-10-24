@@ -3,6 +3,7 @@ import { render, waitFor } from '@testing-library/react';
 import { rest } from 'msw'
 import { currencyMock } from '../testUtils/currencyMock';
 import { CurrencyProvider, useCurrency, createArrayFromCurrencyObject } from './currencyContext';
+import { config } from '../config';
 
 global.matchMedia = global.matchMedia || function () {
   return {
@@ -36,7 +37,7 @@ export const CurrencyContextTestComponent = () => {
 }
 
 const server = setupServer(
-  rest.get('https://freecurrencyapi.net/api/v2/latest', (req, res, ctx) => {
+  rest.get(`${config.apiUrl}/latest`, (req, res, ctx) => {
     return res(ctx.json(currencyMock))
   }),
 )
@@ -64,7 +65,7 @@ describe('Currencies pcontext test', () => {
 
   test('Should return error page in case of API error', async () => {
     server.use(
-      rest.get('https://freecurrencyapi.net/api/v2/latest', (req, res, ctx) => {
+      rest.get(`${config.apiUrl}/latest`, (req, res, ctx) => {
         return res(ctx.status(500))
       }),
     )

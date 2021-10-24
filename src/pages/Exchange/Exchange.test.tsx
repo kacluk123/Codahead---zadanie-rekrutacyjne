@@ -6,6 +6,7 @@ import { calculateCurrency } from './Exchange'
 import { CurrencyProvider } from '../../context/currencyContext';
 import { Exchange } from './Exchange'
 import { currencyMock } from '../../testUtils/currencyMock';
+import { config } from '../../config';
 
 global.matchMedia = global.matchMedia || function () {
   return {
@@ -22,7 +23,7 @@ test('Currency calculation function work properly', () => {
 
 
 const server = setupServer(
-  rest.get('https://freecurrencyapi.net/api/v2/latest', (req, res, ctx) => {
+  rest.get(`${config.apiUrl}/latest`, (req, res, ctx) => {
     return res(ctx.json(currencyMock))
   }),
 )

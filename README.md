@@ -5,4 +5,4 @@ How to run:
 
 Tests: 
 
-yarn test
+yarn test a
